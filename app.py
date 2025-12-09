@@ -12,6 +12,8 @@ import joblib
 # Initialize the Dash app with Bootstrap theme
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+server = app.server
+
 # Load ML model from Hugging Face Hub
 try:
     repo_id = "chinmay1031/ipl-model"  # ⬅️ Replace with your actual Hugging Face username/repo
