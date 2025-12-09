@@ -6,15 +6,30 @@ from dash import dcc, html, Input, Output, State
 import dash_bootstrap_components as dbc
 from datetime import datetime
 import os
+from huggingface_hub import hf_hub_download
+import joblib
 
 # Initialize the Dash app with Bootstrap theme
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+# Load ML model from Hugging Face Hub
+try:
+    repo_id = "chinmay1031/ipl-model"  # ⬅️ Replace with your actual Hugging Face username/repo
+    filename = "ml_model.pkl"
+    model_path = hf_hub_download(repo_id=repo_id, filename=filename)
+    model = joblib.load(model_path)
+    print(f"✓ Model loaded successfully from Hugging Face: {repo_id}/{filename}")
+except Exception as e:
+    print("✗ Failed to load model from Hugging Face.")
+    print("Error:", e)
+    exit("Aborting app launch due to missing model.")
+
 
 # Load the ML model
 # Choose ONE of these options based on where your ml_model.pkl file is located:
 
 # Option 1: If ml_model.pkl is in Documents folder
-filename = '//Users/chinmaybandekar/Documents/ml_model.pkl'
+#filename = '//Users/chinmaybandekar/Documents/ml_model.pkl'
 
 # Option 2: If ml_model.pkl is in the same folder as this app.py
 # filename = 'ml_model.pkl'
@@ -25,13 +40,13 @@ filename = '//Users/chinmaybandekar/Documents/ml_model.pkl'
 # Option 4: Using expanduser (works for any user)
 # filename = os.path.expanduser('~/Documents/ml_model.pkl')
 
-try:
-    model = pickle.load(open(filename, 'rb'))
-    print(f"✓ Model loaded successfully from: {filename}")
-except FileNotFoundError:
-    print(f"✗ Error: Could not find model file at: {filename}")
-    print("Please update the 'filename' variable with the correct path to your ml_model.pkl file")
-    exit()
+#try:
+    #model = pickle.load(open(filename, 'rb'))
+   # print(f"✓ Model loaded successfully from: {filename}")
+#except FileNotFoundError:
+    #print(f"✗ Error: Could not find model file at: {filename}")
+    #print("Please update the 'filename' variable with the correct path to your ml_model.pkl file")
+    #exit()
 
 # Define team list with updated names
 teams = [
