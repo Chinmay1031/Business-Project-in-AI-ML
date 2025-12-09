@@ -62,7 +62,7 @@ teams = [
     'Lucknow Super Giants'
 ]
 
-# Team colors for better visualizations
+# Team colors for better visualizationnss
 team_colors = {
     'Chennai Super Kings': '#FDB913',
     'Delhi Capitals': '#282968',
