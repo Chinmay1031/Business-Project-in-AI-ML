@@ -9,14 +9,14 @@ import os
 from huggingface_hub import hf_hub_download
 import joblib
 
-# Initialize the Dash app with Bootstrap theme
+
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 server = app.server
 
-# Load ML model from Hugging Face Hub
+
 try:
-    repo_id = "chinmay1031/ipl-model"  # ⬅️ Replace with your actual Hugging Face username/repo
+    repo_id = "chinmay1031/ipl-model" 
     filename = "ml_model.pkl"
     model_path = hf_hub_download(repo_id=repo_id, filename=filename)
     model = joblib.load(model_path)
@@ -27,34 +27,11 @@ except Exception as e:
     exit("Aborting app launch due to missing model.")
 
 
-# Load the ML model
-# Choose ONE of these options based on where your ml_model.pkl file is located:
 
-# Option 1: If ml_model.pkl is in Documents folder
-#filename = '//Users/chinmaybandekar/Documents/ml_model.pkl'
-
-# Option 2: If ml_model.pkl is in the same folder as this app.py
-# filename = 'ml_model.pkl'
-
-# Option 3: If ml_model.pkl is in your project folder
-# filename = '/Users/chinmaybandekar/Documents/Projects/Business-Project-in-AI-ML-1/ml_model.pkl'
-
-# Option 4: Using expanduser (works for any user)
-# filename = os.path.expanduser('~/Documents/ml_model.pkl')
-
-#try:
-    #model = pickle.load(open(filename, 'rb'))
-   # print(f"✓ Model loaded successfully from: {filename}")
-#except FileNotFoundError:
-    #print(f"✗ Error: Could not find model file at: {filename}")
-    #print("Please update the 'filename' variable with the correct path to your ml_model.pkl file")
-    #exit()
-
-# Define team list with updated names
 teams = [
     'Chennai Super Kings',
-    'Delhi Capitals',  # Updated from Delhi Daredevils
-    'Punjab Kings',  # Updated from Kings XI Punjab
+    'Delhi Capitals',  
+    'Punjab Kings',  
     'Kolkata Knight Riders',
     'Mumbai Indians',
     'Rajasthan Royals',
@@ -64,7 +41,7 @@ teams = [
     'Lucknow Super Giants'
 ]
 
-# Team colors for better visualizationnss
+
 team_colors = {
     'Chennai Super Kings': '#FDB913',
     'Delhi Capitals': '#282968',
@@ -78,11 +55,11 @@ team_colors = {
     'Lucknow Super Giants': '#4E91CC'
 }
 
-# App layout with improved UI
+
 app.layout = html.Div([
-    # Background style
+    
     html.Div([
-        # Header with icon
+       
         html.Div([
             html.H1([
                 html.I(className="fas fa-cricket-ball", style={'margin-right': '15px'}),
@@ -102,17 +79,17 @@ app.layout = html.Div([
             'margin-bottom': '20px'
         }),
         
-        # Main content container with card design
+        
         dbc.Container([
             dbc.Card([
                 dbc.CardBody([
-                    # Info Alert
+                 
                     dbc.Alert([
                         html.I(className="fas fa-info-circle", style={'margin-right': '10px'}),
                         "Minimun 5 overs data required for accurate prediction !"
                     ], color="info", dismissable=True, style={'margin-bottom': '25px'}),
                     
-                    # Team Selection Section
+                  
                     html.Div([
                         html.H4([
                             html.I(className="fas fa-users", style={'margin-right': '10px'}),
@@ -149,7 +126,7 @@ app.layout = html.Div([
                             ], md=6)
                         ]),
                         
-                        # Error message for same team selection
+                        
                         html.Div(id='team-error', style={'margin-bottom': '20px'})
                     ], style={
                         'background': '#f8f9fa',
@@ -159,7 +136,7 @@ app.layout = html.Div([
                         'box-shadow': '0 2px 4px rgba(0,0,0,0.1)'
                     }),
                     
-                    # Match Statistics Section
+                  
                     html.Div([
                         html.H4([
                             html.I(className="fas fa-chart-line", style={'margin-right': '10px'}),
@@ -214,7 +191,7 @@ app.layout = html.Div([
                             ], md=6)
                         ], style={'margin-bottom': '25px'}),
                         
-                        # Wickets Fallen
+                      
                         html.Div([
                             html.Label([
                                 html.I(className="fas fa-exclamation-triangle", style={'margin-right': '8px'}),
@@ -231,7 +208,7 @@ app.layout = html.Div([
                             )
                         ], style={'margin-bottom': '30px'}),
                         
-                        # Last 5 Overs Stats
+                        
                         html.H5([
                             html.I(className="fas fa-history", style={'margin-right': '10px'}),
                             'Last 5 Overs Performance'
@@ -288,7 +265,7 @@ app.layout = html.Div([
                         'box-shadow': '0 2px 4px rgba(0,0,0,0.1)'
                     }),
                     
-                    # Predict Button with improved styling
+                   
                     dbc.Button([
                         html.I(className="fas fa-magic", style={'margin-right': '10px'}),
                         'Predict Score'
@@ -309,10 +286,10 @@ app.layout = html.Div([
                         }
                     ),
                     
-                    # Prediction Result
+                   
                     html.Div(id='prediction-output'),
                     
-                    # Additional Stats Display
+                    
                     html.Div(id='match-stats', style={'margin-top': '20px'})
                 ])
             ], style={
@@ -323,7 +300,7 @@ app.layout = html.Div([
             })
         ], fluid=True, style={'max-width': '900px', 'padding': '20px'}),
         
-        # Footer
+        
         html.Div([
             html.P([
                 html.I(className="fas fa-code", style={'margin-right': '8px'}),
@@ -349,7 +326,7 @@ app.layout = html.Div([
         'padding': '0'
     }),
     
-    # Add Font Awesome for icons
+    
     html.Link(
         rel='stylesheet',
         href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
@@ -360,7 +337,7 @@ app.layout = html.Div([
 def get_team_encoding(team_name):
     """Convert team name to one-hot encoding"""
     encoding = [0, 0, 0, 0, 0, 0, 0, 0]
-    # Map new team names to old encoding
+    
     team_map = {
         'Chennai Super Kings': 'Chennai Super Kings',
         'Delhi Capitals': 'Delhi Daredevils',
@@ -370,8 +347,8 @@ def get_team_encoding(team_name):
         'Rajasthan Royals': 'Rajasthan Royals',
         'Royal Challengers Bangalore': 'Royal Challengers Bangalore',
         'Sunrisers Hyderabad': 'Sunrisers Hyderabad',
-        'Gujarat Titans': 'Mumbai Indians',  # Map to similar team
-        'Lucknow Super Giants': 'Kings XI Punjab'  # Map to similar team
+        'Gujarat Titans': 'Mumbai Indians',  
+        'Lucknow Super Giants': 'Kings XI Punjab'  
     }
     
     team_index = {
@@ -391,7 +368,7 @@ def get_team_encoding(team_name):
     return encoding
 
 
-# Callback for team validation
+
 @app.callback(
     Output('team-error', 'children'),
     Input('batting-team', 'value'),
@@ -409,7 +386,7 @@ def validate_teams(batting_team, bowling_team):
     return None
 
 
-# Callback for overs validation
+
 @app.callback(
     Output('overs-error', 'children'),
     Input('overs', 'value')
@@ -425,7 +402,7 @@ def validate_overs(overs):
     return None
 
 
-# Callback for prediction and stats
+
 @app.callback(
     [Output('prediction-output', 'children'),
      Output('match-stats', 'children')],
@@ -442,7 +419,7 @@ def predict_score(n_clicks, batting_team, bowling_team, overs, runs, wickets, ru
     if n_clicks == 0:
         return None, None
     
-    # Validate inputs
+    
     if batting_team == bowling_team:
         return dbc.Alert([
             html.I(className="fas fa-times-circle", style={'margin-right': '10px'}),
@@ -457,23 +434,23 @@ def predict_score(n_clicks, batting_team, bowling_team, overs, runs, wickets, ru
                 'Please enter a valid over value'
             ], color='warning'), None
     
-    # Build prediction array
+   
     prediction_array = []
     prediction_array.extend(get_team_encoding(batting_team))
     prediction_array.extend(get_team_encoding(bowling_team))
     prediction_array.extend([runs, wickets, overs, runs_prev_5, wickets_prev_5])
     
-    # Convert to numpy array and predict
+    
     prediction_array = np.array([prediction_array])
     predict = model.predict(prediction_array)
     my_prediction = int(round(predict[0]))
     
-    # Calculate additional stats
+  
     balls_remaining = (20 - overs) * 6
     current_run_rate = runs / overs if overs > 0 else 0
     required_run_rate = (my_prediction - runs) / ((20 - overs) if overs < 20 else 1)
     
-    # Prediction result with enhanced design
+    
     prediction_result = dbc.Card([
         dbc.CardBody([
             html.Div([
@@ -509,7 +486,7 @@ def predict_score(n_clicks, batting_team, bowling_team, overs, runs, wickets, ru
         'animation': 'fadeIn 0.5s'
     })
     
-    # Additional match statistics
+    
     stats_cards = dbc.Row([
         dbc.Col([
             dbc.Card([
